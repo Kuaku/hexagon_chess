@@ -1,0 +1,23 @@
+{
+  "name": "hexagon_chess",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/Kuaku/hexagon_chess.git",
+  "author": "Mika <mika.fynn.von.reeken@student.ibs-ol.de>",
+  "license": "MIT",
+  "scripts": {
+    "test": "nyc ./node_modules/.bin/_mocha 'test/**/*.test.ts'"
+  },
+  "devDependencies": {
+    "@testdeck/mocha": "^0.3.3",
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0",
+    "nyc": "^15.1.0",
+    "ts-mockito": "^2.6.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.6"
+  },
+  "dependencies": {
+    "@istanbuljs/nyc-config-typescript": "^1.0.2"
+  }
+}
