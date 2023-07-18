@@ -4,8 +4,9 @@ import * as _chai from 'chai';
 import { mock, instance } from 'ts-mockito';
 import { Game } from '../src/game';
 import { Position } from '../src/position';
-import { Figure } from '../src/figure';
+import { Figure, get_default_figure_by_name } from '../src/figure';
 import { FIGURES } from '../src/figure';
+import { Move } from '../src/move';
 
 _chai.should();
 
@@ -44,5 +45,22 @@ _chai.should();
         this._game.is_valid_position(new Position(5, 0, -5)).should.equal(true);
         this._game.is_valid_position(new Position(5, 0, -6)).should.equal(false);
         this._game.is_valid_position(new Position(0, 6, -6)).should.equal(false);
+    }
+
+    @test 'Execute simpel move'() {
+        let move = new Move(new Position(-1, 1, 0), new Position(0, 0, 0), get_default_figure_by_name('pawn'), get_default_figure_by_name('pawn'));
+        this._game.execute_move(move);
+        this._game.get_figure(new Position(0, 0, 0)).should.not.equal(undefined);
+    }
+
+    @test 'test'() {
+        console.log("-------------------");
+        console.log(this._game.to_string());
+        let figure = this._game.get_figure(new Position(-1, 3, -2));
+        let moves = figure.get_moves(this._game);
+        this._game.execute_move(moves[0]);
+        moves = figure.get_moves(this._game);
+        console.log(this._game.to_string());
+        console.log(moves);
     }
 }

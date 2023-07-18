@@ -1,14 +1,46 @@
 import { COLORS, FIGURES, Figure, get_default_figure_by_name, COLORS_T } from './figure';
+import { Move } from './move';
 import { Position } from "./position";
-import { DEFAULT_FIGURES_I } from '../dist/figure';
+
+export const BLACK_PAWNS_STARTING_POSITIONS: Position[] = [
+    new Position(-5, 1, 4),
+    new Position(-4, 1, 3),
+    new Position(-3, 1, 2),
+    new Position(-2, 1, 1),
+    new Position(-1, 1, 0),
+    new Position(-1, 2, -1),
+    new Position(-1, 3, -2),
+    new Position(-1, 4, -3),
+    new Position(-1, 5, -4)
+];
+
+export const WHITE_PAWNS_STARTING_POSITIONS: Position[] = [
+    new Position(5, -1, -4),
+    new Position(4, -1, -3),
+    new Position(3, -1, -2),
+    new Position(2, -1, -1),
+    new Position(1, -1, 0),
+    new Position(1, -2, 1),
+    new Position(1, -3, 2),
+    new Position(1, -4, 3),
+    new Position(1, -5, 4)
+];
 
 export class Game {
     figures: Figure[] = [];
     size: number = 5;
+    history: Move[] = [];
 
-    constructor() {
+    temp_game: Game;
+    is_temp_game: boolean = false;
+
+    constructor(is_temp_game: boolean = false) {
         for (let i = 0; i < 36; i++) {
             this.figures.push(new Figure(new Position(0, 0, 0), COLORS.BLACK, get_default_figure_by_name('pawn')));
+        }
+        this.is_temp_game = is_temp_game;
+        if (!is_temp_game) {
+            this.temp_game = new Game(true);
         }
     }
 
@@ -40,6 +72,12 @@ export class Game {
     }
 
     init(): void {
+        if (!this.is_temp_game) {
+            this.temp_game.init();
+        }
+
+        this.history = [];
+
         this.remove_all_figures();
         this.add_figure(new Position(-5, 5, 0), COLORS.BLACK, get_default_figure_by_name('bishop'));
         this.add_figure(new Position(-4, 4, 0), COLORS.BLACK, get_default_figure_by_name('bishop'));
@@ -78,6 +116,28 @@ export class Game {
         this.add_figure(new Position(1, -3, 2), COLORS.WHITE, get_default_figure_by_name('pawn'));
         this.add_figure(new Position(1, -4, 3), COLORS.WHITE, get_default_figure_by_name('pawn'));
         this.add_figure(new Position(1, -5, 4), COLORS.WHITE, get_default_figure_by_name('pawn'));
+    }
+
+    execute_move(move: Move): void {
+        console.log(move);
+        let figure = this.get_figure(move.old_position); 
+        figure.set_position(move.new_position);
+        figure.figure = move.new_figure_id;
+
+        if (move.hit_figure_id != -1) {
+            this.get_figure(move.new_position).is_alive = false;
+        }
+        this.history.push(move);
+    }
+
+    undo_move(): void {
+        let move = this.history.pop();
+        if (move) {
+            let figure = this.get_figure(move.new_position);
+            figure.set_position(move.old_position);
+            figure.figure = move.old_figure_id;
+            this.add_figure(move.new_position, move.hit_figure_color, move.hit_figure_id);
+        }
     }
 
     clone(game: Game): void {
