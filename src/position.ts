@@ -12,11 +12,16 @@ export class Position {
         this.z = z;
     }
 
+    add(position: Position): void {
+        this.x += position.x;
+        this.z += position.z;
+    }
+
     equals(position: Position): boolean {
         return this.x == position.x && this.z == position.z;
     }
 
-    clone(position: Position): void {
+    clone_into(position: Position): void {
         position.set(this.x, this.z);
     }
 

@@ -10,9 +10,9 @@ export class Move {
     hit_figure_color: COLORS_T
     constructor(old_position: Position, new_position: Position, old_figure_id: number, new_figure_id: number, hit_figure_id: number = -1, hit_figure_color: COLORS_T = COLORS.NONE) {
         this.old_position = new Position();
-        old_position.clone(this.old_position);
+        old_position.clone_into(this.old_position);
         this.new_position = new Position();
-        new_position.clone(this.new_position);
+        new_position.clone_into(this.new_position);
 
         this.old_figure_id = old_figure_id;
         this.new_figure_id = new_figure_id;

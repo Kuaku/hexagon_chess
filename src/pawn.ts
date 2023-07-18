@@ -16,8 +16,8 @@ function can_move(game: Game, position: Position): boolean {
     return temp_figure === undefined;
 }
 
-export function pawn_move_function(game: Game, position: Position): Move[] {
-    let figure = game.get_figure(position);
+export function pawn_move_function(game: Game, figure: Figure): Move[] {
+    let position = figure.position;
     if (figure == null) {
         throw new Error('Figure not found');
     }
