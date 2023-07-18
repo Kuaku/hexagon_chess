@@ -3,27 +3,27 @@ import { Move } from './move';
 import { Position } from "./position";
 
 export const BLACK_PAWNS_STARTING_POSITIONS: Position[] = [
-    new Position(-5, 1, 4),
-    new Position(-4, 1, 3),
-    new Position(-3, 1, 2),
-    new Position(-2, 1, 1),
-    new Position(-1, 1, 0),
-    new Position(-1, 2, -1),
-    new Position(-1, 3, -2),
-    new Position(-1, 4, -3),
-    new Position(-1, 5, -4)
+    new Position(-5, 4),
+    new Position(-4, 3),
+    new Position(-3, 2),
+    new Position(-2, 1),
+    new Position(-1, 0),
+    new Position(-1, -1),
+    new Position(-1, -2),
+    new Position(-1, -3),
+    new Position(-1, -4)
 ];
 
 export const WHITE_PAWNS_STARTING_POSITIONS: Position[] = [
-    new Position(5, -1, -4),
-    new Position(4, -1, -3),
-    new Position(3, -1, -2),
-    new Position(2, -1, -1),
-    new Position(1, -1, 0),
-    new Position(1, -2, 1),
-    new Position(1, -3, 2),
-    new Position(1, -4, 3),
-    new Position(1, -5, 4)
+    new Position(5, -4),
+    new Position(4, -3),
+    new Position(3, -2),
+    new Position(2, -1),
+    new Position(1, 0),
+    new Position(1, 1),
+    new Position(1, 2),
+    new Position(1, 3),
+    new Position(1, 4)
 ];
 
 export class Game {
@@ -36,7 +36,7 @@ export class Game {
 
     constructor(is_temp_game: boolean = false) {
         for (let i = 0; i < 36; i++) {
-            this.figures.push(new Figure(new Position(0, 0, 0), COLORS.BLACK, get_default_figure_by_name('pawn')));
+            this.figures.push(new Figure(new Position(0, 0), COLORS.BLACK, get_default_figure_by_name('pawn')));
         }
         this.is_temp_game = is_temp_game;
         if (!is_temp_game) {
@@ -50,7 +50,7 @@ export class Game {
             index++;
         }
         if (index == this.figures.length) {
-            this.figures.push(new Figure(new Position(0, 0, 0), COLORS.BLACK, get_default_figure_by_name('pawn')));
+            this.figures.push(new Figure(new Position(0, 0), COLORS.BLACK, get_default_figure_by_name('pawn')));
         }
         return index;
     }
@@ -79,47 +79,46 @@ export class Game {
         this.history = [];
 
         this.remove_all_figures();
-        this.add_figure(new Position(-5, 5, 0), COLORS.BLACK, get_default_figure_by_name('bishop'));
-        this.add_figure(new Position(-4, 4, 0), COLORS.BLACK, get_default_figure_by_name('bishop'));
-        this.add_figure(new Position(-3, 3, 0), COLORS.BLACK, get_default_figure_by_name('bishop'));
-        this.add_figure(new Position(-5, 4, 1), COLORS.BLACK, get_default_figure_by_name('queen'));
-        this.add_figure(new Position(-5, 3, 2), COLORS.BLACK, get_default_figure_by_name('knight'));
-        this.add_figure(new Position(-5, 2, 3), COLORS.BLACK, get_default_figure_by_name('rook'));
-        this.add_figure(new Position(-4, 5, -1), COLORS.BLACK, get_default_figure_by_name('king'));
-        this.add_figure(new Position(-3, 5, -2), COLORS.BLACK, get_default_figure_by_name('knight'));
-        this.add_figure(new Position(-2, 5, -3), COLORS.BLACK, get_default_figure_by_name('rook'));
-        this.add_figure(new Position(-5, 1, 4), COLORS.BLACK, get_default_figure_by_name('pawn'));
-        this.add_figure(new Position(-4, 1, 3), COLORS.BLACK, get_default_figure_by_name('pawn'));
-        this.add_figure(new Position(-3, 1, 2), COLORS.BLACK, get_default_figure_by_name('pawn'));
-        this.add_figure(new Position(-2, 1, 1), COLORS.BLACK, get_default_figure_by_name('pawn'));
-        this.add_figure(new Position(-1, 1, 0), COLORS.BLACK, get_default_figure_by_name('pawn'));
-        this.add_figure(new Position(-1, 2, -1), COLORS.BLACK, get_default_figure_by_name('pawn'));
-        this.add_figure(new Position(-1, 3, -2), COLORS.BLACK, get_default_figure_by_name('pawn'));
-        this.add_figure(new Position(-1, 4, -3), COLORS.BLACK, get_default_figure_by_name('pawn'));
-        this.add_figure(new Position(-1, 5, -4), COLORS.BLACK, get_default_figure_by_name('pawn'));
+        this.add_figure(new Position(-5, 0), COLORS.BLACK, get_default_figure_by_name('bishop'));
+        this.add_figure(new Position(-4, 0), COLORS.BLACK, get_default_figure_by_name('bishop'));
+        this.add_figure(new Position(-3, 0), COLORS.BLACK, get_default_figure_by_name('bishop'));
+        this.add_figure(new Position(-5, 1), COLORS.BLACK, get_default_figure_by_name('queen'));
+        this.add_figure(new Position(-5, 2), COLORS.BLACK, get_default_figure_by_name('knight'));
+        this.add_figure(new Position(-5, 3), COLORS.BLACK, get_default_figure_by_name('rook'));
+        this.add_figure(new Position(-4, -1), COLORS.BLACK, get_default_figure_by_name('king'));
+        this.add_figure(new Position(-3, -2), COLORS.BLACK, get_default_figure_by_name('knight'));
+        this.add_figure(new Position(-2, -3), COLORS.BLACK, get_default_figure_by_name('rook'));
+        this.add_figure(new Position(-5, 4), COLORS.BLACK, get_default_figure_by_name('pawn'));
+        this.add_figure(new Position(-4, 3), COLORS.BLACK, get_default_figure_by_name('pawn'));
+        this.add_figure(new Position(-3, 2), COLORS.BLACK, get_default_figure_by_name('pawn'));
+        this.add_figure(new Position(-2, 1), COLORS.BLACK, get_default_figure_by_name('pawn'));
+        this.add_figure(new Position(-1, 0), COLORS.BLACK, get_default_figure_by_name('pawn'));
+        this.add_figure(new Position(-1, -1), COLORS.BLACK, get_default_figure_by_name('pawn'));
+        this.add_figure(new Position(-1, -2), COLORS.BLACK, get_default_figure_by_name('pawn'));
+        this.add_figure(new Position(-1, -3), COLORS.BLACK, get_default_figure_by_name('pawn'));
+        this.add_figure(new Position(-1, -4), COLORS.BLACK, get_default_figure_by_name('pawn'));
     
-        this.add_figure(new Position(5, -5, 0), COLORS.WHITE, get_default_figure_by_name('bishop'));
-        this.add_figure(new Position(4, -4, 0), COLORS.WHITE, get_default_figure_by_name('bishop'));
-        this.add_figure(new Position(3, -3, 0), COLORS.WHITE, get_default_figure_by_name('bishop'));
-        this.add_figure(new Position(4, -5, 1), COLORS.WHITE, get_default_figure_by_name('queen'));
-        this.add_figure(new Position(3, -5, 2), COLORS.WHITE, get_default_figure_by_name('knight'));
-        this.add_figure(new Position(2, -5, 3), COLORS.WHITE, get_default_figure_by_name('rook'));
-        this.add_figure(new Position(5, -4, -1), COLORS.WHITE, get_default_figure_by_name('king'));
-        this.add_figure(new Position(5, -3, -2), COLORS.WHITE, get_default_figure_by_name('knight'));
-        this.add_figure(new Position(5, -2, -3), COLORS.WHITE, get_default_figure_by_name('rook'));
-        this.add_figure(new Position(5, -1, -4), COLORS.WHITE, get_default_figure_by_name('pawn'));
-        this.add_figure(new Position(4, -1, -3), COLORS.WHITE, get_default_figure_by_name('pawn'));
-        this.add_figure(new Position(3, -1, -2), COLORS.WHITE, get_default_figure_by_name('pawn'));
-        this.add_figure(new Position(2, -1, -1), COLORS.WHITE, get_default_figure_by_name('pawn'));
-        this.add_figure(new Position(1, -1, 0), COLORS.WHITE, get_default_figure_by_name('pawn'));
-        this.add_figure(new Position(1, -2, 1), COLORS.WHITE, get_default_figure_by_name('pawn'));
-        this.add_figure(new Position(1, -3, 2), COLORS.WHITE, get_default_figure_by_name('pawn'));
-        this.add_figure(new Position(1, -4, 3), COLORS.WHITE, get_default_figure_by_name('pawn'));
-        this.add_figure(new Position(1, -5, 4), COLORS.WHITE, get_default_figure_by_name('pawn'));
+        this.add_figure(new Position(5, 0), COLORS.WHITE, get_default_figure_by_name('bishop'));
+        this.add_figure(new Position(4, 0), COLORS.WHITE, get_default_figure_by_name('bishop'));
+        this.add_figure(new Position(3, 0), COLORS.WHITE, get_default_figure_by_name('bishop'));
+        this.add_figure(new Position(4, 1), COLORS.WHITE, get_default_figure_by_name('queen'));
+        this.add_figure(new Position(3, 2), COLORS.WHITE, get_default_figure_by_name('knight'));
+        this.add_figure(new Position(2, 3), COLORS.WHITE, get_default_figure_by_name('rook'));
+        this.add_figure(new Position(5, -1), COLORS.WHITE, get_default_figure_by_name('king'));
+        this.add_figure(new Position(5, -2), COLORS.WHITE, get_default_figure_by_name('knight'));
+        this.add_figure(new Position(5, -3), COLORS.WHITE, get_default_figure_by_name('rook'));
+        this.add_figure(new Position(5, -4), COLORS.WHITE, get_default_figure_by_name('pawn'));
+        this.add_figure(new Position(4, -3), COLORS.WHITE, get_default_figure_by_name('pawn'));
+        this.add_figure(new Position(3, -2), COLORS.WHITE, get_default_figure_by_name('pawn'));
+        this.add_figure(new Position(2, -1), COLORS.WHITE, get_default_figure_by_name('pawn'));
+        this.add_figure(new Position(1, 0), COLORS.WHITE, get_default_figure_by_name('pawn'));
+        this.add_figure(new Position(1, 1), COLORS.WHITE, get_default_figure_by_name('pawn'));
+        this.add_figure(new Position(1, 2), COLORS.WHITE, get_default_figure_by_name('pawn'));
+        this.add_figure(new Position(1, 3), COLORS.WHITE, get_default_figure_by_name('pawn'));
+        this.add_figure(new Position(1, 4), COLORS.WHITE, get_default_figure_by_name('pawn'));
     }
 
     execute_move(move: Move): void {
-        console.log(move);
         let figure = this.get_figure(move.old_position); 
         figure.set_position(move.new_position);
         figure.figure = move.new_figure_id;
@@ -151,11 +150,8 @@ export class Game {
 
     is_valid_position(position: Position): boolean {
         let x = position.x;
-        let y = position.y;
         let z = position.z;
-        if (x + y + z != 0) {
-            return false;
-        }
+        let y = - x - z;
         if (Math.abs(x) > this.size || Math.abs(y) > this.size || Math.abs(z) > this.size) {
             return false;
         }
@@ -185,9 +181,8 @@ export class Game {
                 line_string += ' ';
             }
             let x = line < lines/2 ? -line : -Math.floor(lines/2); 
-            let y = line < lines/2 ? Math.floor(lines/2) : Math.floor(lines/2) - line + this.size;
             for (let i = 0; i < figures; i++) {
-                let position = new Position(x, y, -Math.floor(lines/2) + line);
+                let position = new Position(x, -Math.floor(lines/2) + line);
                 let figure = this.get_figure(position);
                 if (figure) {
                     line_string += FIGURES[figure.figure].symbol;
@@ -195,7 +190,6 @@ export class Game {
                     line_string += '#';
                 }
                 x++;
-                y--;
             }   
             if (line < Math.floor(lines/2)) {
                 figures++;

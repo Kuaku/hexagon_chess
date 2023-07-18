@@ -107,69 +107,50 @@ function pawn_move_function(game: Game, position: Position): Move[] {
         throw new Error('Figure not found');
     }
     let moves: Move[] = [];
-    if (figure.color == COLORS.WHITE) {
-        let temp_position = new Position(position.x, position.y + 1, position.z - 1);
-        let temp_figure = game.get_figure(temp_position);
-        if (temp_figure !== undefined && temp_figure.color != figure.color) {
-            moves.push(new Move(position, temp_position, figure.figure, figure.figure, temp_figure.figure, temp_figure.color));
-        }
-        temp_position = new Position(position.x - 1, position.y, position.z + 1);
-        temp_figure = game.get_figure(temp_position);
-        if (temp_figure !== undefined && temp_figure.color != figure.color) {
-            moves.push(new Move(position, temp_position, figure.figure, figure.figure, temp_figure.figure, temp_figure.color));
-        }
-        temp_position = new Position(position.x - 1, position.y + 1, position.z);
-        if (!game.is_valid_position(temp_position)) {
-            return moves;
-        }
-        temp_figure = game.get_figure(temp_position);
-        if (temp_figure !== undefined) {
-            return moves;
-        }
-        moves.push(new Move(position, temp_position, figure.figure, figure.figure));
-        if (WHITE_PAWNS_STARTING_POSITIONS.some(spawn_position => spawn_position.equals(position))) {
-            temp_position = new Position(position.x - 2, position.y + 2, position.z);
-            if (!game.is_valid_position(temp_position)) {
-                return moves;
-            }
-            temp_figure = game.get_figure(temp_position);
-            if (temp_figure !== undefined) {
-                return moves;
-            }
-            moves.push(new Move(position, temp_position, figure.figure, figure.figure));
-        }
-    } else {
-        let temp_position = new Position(position.x + 1, position.y, position.z - 1);
-        let temp_figure = game.get_figure(temp_position);
-        if (temp_figure !== undefined && temp_figure.color != figure.color) {
-            moves.push(new Move(position, temp_position, figure.figure, figure.figure, temp_figure.figure, temp_figure.color));
-        }
-        temp_position = new Position(position.x, position.y - 1, position.z + 1);
-        temp_figure = game.get_figure(temp_position);
-        if (temp_figure !== undefined && temp_figure.color != figure.color) {
-            moves.push(new Move(position, temp_position, figure.figure, figure.figure, temp_figure.figure, temp_figure.color));
-        }
-        temp_position = new Position(position.x + 1, position.y - 1, position.z);
-        if (!game.is_valid_position(temp_position)) {
-            return moves;
-        }
-        temp_figure = game.get_figure(temp_position);
-        if (temp_figure !== undefined) {
-            return moves;
-        }
-        moves.push(new Move(position, temp_position, figure.figure, figure.figure));
-        if (BLACK_PAWNS_STARTING_POSITIONS.some(spawn_position => spawn_position.equals(position))) {
-            temp_position = new Position(position.x + 2, position.y - 2, position.z);
-            if (!game.is_valid_position(temp_position)) {
-                return moves;
-            }
-            temp_figure = game.get_figure(temp_position);
-            if (temp_figure !== undefined) {
-                return moves;
-            }
-            moves.push(new Move(position, temp_position, figure.figure, figure.figure));
-        }
+    let multiplier = figure.color == COLORS.WHITE ? 1 : -1;
+    let temp_position: Position; 
+    let temp_figure: Figure;
+    
+    //Above hit scan
+    temp_position = new Position(position.x, position.z - multiplier);
+    temp_figure = game.get_figure(temp_position);
+    if (temp_figure !== undefined && temp_figure.color != figure.color) {
+        moves.push(new Move(position, temp_position, figure.figure, figure.figure, temp_figure.figure, temp_figure.color));
     }
+
+    //Below hit scan
+    temp_position = new Position(position.x - multiplier, position.z + multiplier);
+    temp_figure = game.get_figure(temp_position);
+    if (temp_figure !== undefined && temp_figure.color != figure.color) {
+        moves.push(new Move(position, temp_position, figure.figure, figure.figure, temp_figure.figure, temp_figure.color));
+    }
+
+    //Forward move scan
+    temp_position = new Position(position.x - multiplier, position.z);
+    if (!game.is_valid_position(temp_position)) {
+        return moves;
+    }
+    temp_figure = game.get_figure(temp_position);
+    if (temp_figure !== undefined) {
+        return moves;
+    }
+    moves.push(new Move(position, temp_position, figure.figure, figure.figure));
+    
+    //Forward double move scan
+    let starting_positions = figure.color == COLORS.WHITE ? WHITE_PAWNS_STARTING_POSITIONS : BLACK_PAWNS_STARTING_POSITIONS;
+    if (!starting_positions.some(spawn_position => spawn_position.equals(position))) {
+        return moves;
+    }
+    temp_position = new Position(position.x - 2 * multiplier, position.z);
+    if (!game.is_valid_position(temp_position)) {
+        return moves;
+    }
+    temp_figure = game.get_figure(temp_position);
+    if (temp_figure !== undefined) {
+        return moves;
+    }
+    moves.push(new Move(position, temp_position, figure.figure, figure.figure));
+    
     return moves;
 }
 

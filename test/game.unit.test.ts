@@ -39,25 +39,26 @@ _chai.should();
     }
 
     @test 'Game should be valid position'() {
-        this._game.is_valid_position(new Position(0, 0, 0)).should.equal(true);
-        this._game.is_valid_position(new Position(5, 5, 5)).should.equal(false);
-        this._game.is_valid_position(new Position(-5, -5, -5)).should.equal(false);
-        this._game.is_valid_position(new Position(5, 0, -5)).should.equal(true);
-        this._game.is_valid_position(new Position(5, 0, -6)).should.equal(false);
-        this._game.is_valid_position(new Position(0, 6, -6)).should.equal(false);
+        this._game.is_valid_position(new Position(0, 0)).should.equal(true);
+        this._game.is_valid_position(new Position(5, 5)).should.equal(false);
+        this._game.is_valid_position(new Position(-5, -5)).should.equal(false);
+        this._game.is_valid_position(new Position(5, -5)).should.equal(true);
+        this._game.is_valid_position(new Position(5, -6)).should.equal(false);
+        this._game.is_valid_position(new Position(0, -6)).should.equal(false);
     }
 
     @test 'Execute simpel move'() {
-        let move = new Move(new Position(-1, 1, 0), new Position(0, 0, 0), get_default_figure_by_name('pawn'), get_default_figure_by_name('pawn'));
+        let move = new Move(new Position(-1, 0), new Position(0, 0), get_default_figure_by_name('pawn'), get_default_figure_by_name('pawn'));
         this._game.execute_move(move);
-        this._game.get_figure(new Position(0, 0, 0)).should.not.equal(undefined);
+        this._game.get_figure(new Position(0, 0)).should.not.equal(undefined);
     }
 
     @test 'test'() {
         console.log("-------------------");
         console.log(this._game.to_string());
-        let figure = this._game.get_figure(new Position(-1, 3, -2));
+        let figure = this._game.get_figure(new Position(-1, -2));
         let moves = figure.get_moves(this._game);
+        console.log(moves);
         this._game.execute_move(moves[0]);
         moves = figure.get_moves(this._game);
         console.log(this._game.to_string());
