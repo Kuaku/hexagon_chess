@@ -56,10 +56,10 @@ _chai.should();
     @test 'test'() {
         console.log("-------------------");
         console.log(this._game.to_string());
-        let figure = this._game.get_figure(new Position(-1, -2));
+        let figure = this._game.get_figure(new Position(-1, -1));
         let moves = figure.get_moves(this._game);
         console.log(moves);
-        this._game.execute_move(moves[0]);
+        this._game.execute_move(moves[1]);
         moves = figure.get_moves(this._game);
         console.log(this._game.to_string());
         console.log(moves);

@@ -1,7 +1,20 @@
-import { COLORS, Figure } from "./figure";
+import { COLORS, COLORS_T, Figure } from "./figure";
 import { BLACK_PAWNS_STARTING_POSITIONS, Game, WHITE_PAWNS_STARTING_POSITIONS } from "./game";
 import { Move } from "./move";
 import { Position } from "./position";
+
+function can_hit(game: Game, position: Position, color: COLORS_T): boolean {
+    let temp_figure = game.get_figure(position);
+    return temp_figure !== undefined && temp_figure.color != color;
+}
+
+function can_move(game: Game, position: Position): boolean {
+    if (!game.is_valid_position(position)) {
+        return false;
+    }
+    let temp_figure = game.get_figure(position);
+    return temp_figure === undefined;
+}
 
 export function pawn_move_function(game: Game, position: Position): Move[] {
     let figure = game.get_figure(position);
@@ -15,25 +28,19 @@ export function pawn_move_function(game: Game, position: Position): Move[] {
     
     //Above hit scan
     temp_position = new Position(position.x, position.z - multiplier);
-    temp_figure = game.get_figure(temp_position);
-    if (temp_figure !== undefined && temp_figure.color != figure.color) {
+    if (can_hit(game, temp_position, figure.color)) {
         moves.push(new Move(position, temp_position, figure.figure, figure.figure, temp_figure.figure, temp_figure.color));
     }
 
     //Below hit scan
     temp_position = new Position(position.x - multiplier, position.z + multiplier);
-    temp_figure = game.get_figure(temp_position);
-    if (temp_figure !== undefined && temp_figure.color != figure.color) {
+    if (can_hit(game, temp_position, figure.color)) {
         moves.push(new Move(position, temp_position, figure.figure, figure.figure, temp_figure.figure, temp_figure.color));
     }
 
     //Forward move scan
     temp_position = new Position(position.x - multiplier, position.z);
-    if (!game.is_valid_position(temp_position)) {
-        return moves;
-    }
-    temp_figure = game.get_figure(temp_position);
-    if (temp_figure !== undefined) {
+    if (!can_move(game, temp_position)) {
         return moves;
     }
     moves.push(new Move(position, temp_position, figure.figure, figure.figure));
@@ -44,11 +51,7 @@ export function pawn_move_function(game: Game, position: Position): Move[] {
         return moves;
     }
     temp_position = new Position(position.x - 2 * multiplier, position.z);
-    if (!game.is_valid_position(temp_position)) {
-        return moves;
-    }
-    temp_figure = game.get_figure(temp_position);
-    if (temp_figure !== undefined) {
+    if (!can_move(game, temp_position)) {
         return moves;
     }
     moves.push(new Move(position, temp_position, figure.figure, figure.figure));
