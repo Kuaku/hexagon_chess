@@ -34,6 +34,11 @@ export class Game {
         this.figures[index].init(position, color, figure_index);
     }
 
+    get_empty_figure(): Figure {
+        let index = this.find_free_index();
+        return this.figures[index];
+    }
+
     init(): void {
         this.remove_all_figures();
         this.add_figure(new Position(-5, 5, 0), COLORS.BLACK, get_default_figure_by_name('bishop'));
@@ -79,7 +84,7 @@ export class Game {
         game.remove_all_figures();
         this.figures.forEach(figure => {
             if (figure.is_alive) {
-                game.add_figure(figure.position.clone(), figure.color, figure.figure);
+                figure.clone(game.get_empty_figure())    
             }
         });
     }

@@ -82,8 +82,11 @@ export class Figure {
         this.is_alive = true;
     }
 
-    clone(): Figure {
-        return new Figure(this.position.clone(), this.color, this.figure);
+    clone(figure: Figure): void {
+        figure.color = this.color;
+        figure.figure = this.figure;
+        figure.is_alive = this.is_alive;
+        this.position.clone(figure.position);
     }
 }
 
