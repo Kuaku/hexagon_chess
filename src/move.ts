@@ -1,4 +1,4 @@
-import { COLORS, COLORS_T } from "./figure";
+import { COLORS, COLORS_T, FIGURES } from "./figure";
 import { Position } from "./position";
 
 export class Move {
@@ -27,5 +27,9 @@ export class Move {
         && this.new_figure_id == move.new_figure_id
         && this.hit_figure_id == move.hit_figure_id
         && this.hit_figure_color == move.hit_figure_color;
+    }
+
+    to_string(): string {
+        return `Move(\n\tOld position: ${this.old_position.to_string()}\n\tNew position: ${this.new_position.to_string()}\n\tOld figure: ${this.old_figure_id}(Symbol: ${FIGURES[this.old_figure_id].symbol})\n\tNew figure: ${this.new_figure_id}(Symbol: ${FIGURES[this.new_figure_id].symbol})\n\tHit figure: ${this.hit_figure_id}(Symbol: ${this.hit_figure_id == -1 ? '-' : FIGURES[this.hit_figure_id].symbol})\n\tHit figure color: ${this.hit_figure_color}\n)`;
     }
 }

@@ -131,7 +131,7 @@ export class Figure {
         position.clone_into(this.position);
     }
 
-    clone(figure: Figure): void {
+    clone_into(figure: Figure): void {
         figure.color = this.color;
         figure.figure = this.figure;
         figure.is_alive = this.is_alive;

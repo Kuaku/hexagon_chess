@@ -48,16 +48,29 @@ _chai.should();
     }
 
     @test 'Execute simpel move'() {
+        this._game.init();
+        console.log(this._game.get_figure(new Position(0, 0)));
         let move = new Move(new Position(-1, 0), new Position(0, 0), get_default_figure_by_name('pawn'), get_default_figure_by_name('pawn'));
         this._game.execute_move(move);
         this._game.get_figure(new Position(0, 0)).should.not.equal(undefined);
     }
 
-    @test 'test'() {
-        console.log("-------------------");
+    @test async 'test'() {
         console.log(this._game.to_string());
-        let figure = this._game.get_figure(new Position(-3, 0));
-        let moves = figure.get_moves(this._game);
-        console.log(figure, moves);
+        //Select random move and repeat with sleep
+        for (let i = 0; i < 100; i++) {
+            //Get all moves
+            let moves = this._game.get_all_moves();
+            //Select random move
+            let move = moves[Math.floor(Math.random() * moves.length)];
+            //Execute move
+            this._game.execute_move(move);
+            console.log("-------------------");
+            console.log(move.to_string());
+            console.log(this._game.to_string());
+            console.log("-------------------");
+            //Sleep
+            await new Promise(resolve => setTimeout(resolve, 5000));
+        }
     }
 }

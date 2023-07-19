@@ -125,13 +125,14 @@ export class Game {
     }
 
     execute_move(move: Move): void {
+        if (move.hit_figure_id != -1) {
+            this.get_figure(move.new_position).is_alive = false;
+        }
+        
         let figure = this.get_figure(move.old_position); 
         figure.set_position(move.new_position);
         figure.figure = move.new_figure_id;
 
-        if (move.hit_figure_id != -1) {
-            this.get_figure(move.new_position).is_alive = false;
-        }
         this.turn = this.turn == COLORS.WHITE ? COLORS.BLACK : COLORS.WHITE;
         this.history.push(move);
     }
@@ -142,7 +143,9 @@ export class Game {
             let figure = this.get_figure(move.new_position);
             figure.set_position(move.old_position);
             figure.figure = move.old_figure_id;
-            this.add_figure(move.new_position, move.hit_figure_color, move.hit_figure_id);
+            if (move.hit_figure_id != -1) {
+                this.add_figure(move.new_position, move.hit_figure_color, move.hit_figure_id);
+            }
             this.turn = this.turn == COLORS.WHITE ? COLORS.BLACK : COLORS.WHITE;
         }
     }
@@ -153,6 +156,16 @@ export class Game {
             return figure.get_moves(this);
         }
         return [];
+    }
+
+    get_all_moves(): Move[] {
+        let moves: Move[] = [];
+        this.figures.forEach(figure => {
+            if (figure.is_alive && figure.color == this.turn) {
+                moves = moves.concat(figure.get_moves(this));
+            }
+        });
+        return moves;
     }
 
     is_valid_move(move: Move): boolean {
@@ -177,7 +190,7 @@ export class Game {
         game.turn = this.turn;
         this.figures.forEach(figure => {
             if (figure.is_alive) {
-                figure.clone(game.get_empty_figure())    
+                figure.clone_into(game.get_empty_figure())    
             }
         });
     }
@@ -197,7 +210,7 @@ export class Game {
             return undefined;
         }
         for (let figure of this.figures) {
-            if (figure.position.equals(position)) {
+            if (figure.position.equals(position) && figure.is_alive) {
                 return figure;
             }
         }
@@ -205,7 +218,7 @@ export class Game {
     }
 
     to_string(): string {
-        let out = '';
+        let out = ``;
         let lines = this.size * 2 + 1
         let figures = this.size + 1;
         for (let line = 0; line < lines; line++) {
