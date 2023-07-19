@@ -138,16 +138,18 @@ export class Figure {
         this.position.clone_into(figure.position);
     }
 
-    get_moves(game: Game): Move[] {
+    get_moves(game: Game, cfc: boolean): Move[] {
         let moves = FIGURES[this.figure].get_moves(game, this); 
         let temp_game = game.temp_game;
-        game.clone_into(temp_game);
-        moves = moves.filter(move => {
-            temp_game.execute_move(move);
-            let has_check = temp_game.has_check(this.color);
-            temp_game.undo_move();
-            return !has_check;
-        })
+        if (cfc) {
+            game.clone_into(temp_game);
+            moves = moves.filter(move => {
+                temp_game.execute_move(move);
+                let has_check = temp_game.has_check_on(this.color);
+                temp_game.undo_move();
+                return !has_check;
+            })
+        }
         return moves;
     }
 }

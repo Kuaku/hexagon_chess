@@ -73,7 +73,13 @@ export class Game {
         return this.figures[index];
     }
 
-    has_check(color: COLORS_T): boolean {
+    has_check_on(color: COLORS_T): boolean {
+        let moves = this.get_all_moves(false);
+        for (let move of moves) {
+            if (move.hit_figure_id == get_default_figure_by_name("king") && move.hit_figure_color == color) {
+                return true;
+            }
+        }
         return false;
     }
 
@@ -158,11 +164,11 @@ export class Game {
         return [];
     }
 
-    get_all_moves(): Move[] {
+    get_all_moves(cfc: boolean = true): Move[] {
         let moves: Move[] = [];
         this.figures.forEach(figure => {
             if (figure.is_alive && figure.color == this.turn) {
-                moves = moves.concat(figure.get_moves(this));
+                moves = moves.concat(figure.get_moves(this, cfc));
             }
         });
         return moves;
