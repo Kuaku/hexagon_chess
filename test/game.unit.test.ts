@@ -26,7 +26,7 @@ _chai.should();
 
     @test 'Game should be cloned'() {
         let game = new Game();
-        this._game.clone(game);
+        this._game.clone_into(game);
         game.figures.length.should.equal(36);
         game.size.should.equal(5);
 

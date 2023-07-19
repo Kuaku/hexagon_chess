@@ -7,6 +7,10 @@ export class Position {
         this.z = z;
     }
 
+    get_y(): number {
+        return - this.x - this.z;
+    }
+
     set(x: number, z: number): void {
         this.x = x;
         this.z = z;

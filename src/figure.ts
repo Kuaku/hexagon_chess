@@ -140,7 +140,14 @@ export class Figure {
 
     get_moves(game: Game): Move[] {
         let moves = FIGURES[this.figure].get_moves(game, this); 
-        //TODO: Filter moves that would result in check
+        let temp_game = game.temp_game;
+        game.clone_into(temp_game);
+        moves = moves.filter(move => {
+            temp_game.execute_move(move);
+            let has_check = temp_game.has_check(this.color);
+            temp_game.undo_move();
+            return !has_check;
+        })
         return moves;
     }
 }

@@ -34,6 +34,8 @@ export class Game {
     temp_game: Game;
     is_temp_game: boolean = false;
 
+    turn: COLORS_T = COLORS.WHITE;
+
     constructor(is_temp_game: boolean = false) {
         for (let i = 0; i < 36; i++) {
             this.figures.push(new Figure(new Position(0, 0), COLORS.BLACK, get_default_figure_by_name('pawn')));
@@ -69,6 +71,10 @@ export class Game {
     get_empty_figure(): Figure {
         let index = this.find_free_index();
         return this.figures[index];
+    }
+
+    has_check(color: COLORS_T): boolean {
+        return false;
     }
 
     init(): void {
@@ -126,6 +132,7 @@ export class Game {
         if (move.hit_figure_id != -1) {
             this.get_figure(move.new_position).is_alive = false;
         }
+        this.turn = this.turn == COLORS.WHITE ? COLORS.BLACK : COLORS.WHITE;
         this.history.push(move);
     }
 
@@ -136,11 +143,38 @@ export class Game {
             figure.set_position(move.old_position);
             figure.figure = move.old_figure_id;
             this.add_figure(move.new_position, move.hit_figure_color, move.hit_figure_id);
+            this.turn = this.turn == COLORS.WHITE ? COLORS.BLACK : COLORS.WHITE;
         }
     }
 
-    clone(game: Game): void {
+    get_moves(postion: Position): Move[] {
+        let figure = this.get_figure(postion);
+        if (figure && figure.is_alive && figure.color == this.turn) {
+            return figure.get_moves(this);
+        }
+        return [];
+    }
+
+    is_valid_move(move: Move): boolean {
+        let moves = this.get_moves(move.old_position);
+        for (let m of moves) {
+            if (m.equals(move)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    get_last_move(): Move | undefined {
+        if (this.history.length > 0) {
+            return this.history[this.history.length - 1];
+        }
+        return undefined;
+    }
+
+    clone_into(game: Game): void {
         game.remove_all_figures();
+        game.turn = this.turn;
         this.figures.forEach(figure => {
             if (figure.is_alive) {
                 figure.clone(game.get_empty_figure())    
