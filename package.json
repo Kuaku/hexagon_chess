@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "repository": "https://github.com/Kuaku/hexagon_chess.git",
-  "author": "Mika <mika.fynn.von.reeken@student.ibs-ol.de>",
+  "author": "selgonu <kuaku.email@gmail.com>",
   "license": "MIT",
   "scripts": {
     "test": "nyc ./node_modules/.bin/_mocha 'test/**/*.test.ts'"
